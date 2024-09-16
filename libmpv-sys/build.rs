@@ -18,13 +18,15 @@ fn main() {
     for path in mpv_flags.link_paths {
         println!("cargo:rustc-link-search={}", path.display());
     }
-
-    let sdl2_flags = pkg_config::Config::new().probe("SDL2").unwrap();
-    for flag in sdl2_flags.libs {
-        println!("cargo:rustc-link-lib={}", flag);
-    }
-    for path in sdl2_flags.link_paths {
-        println!("cargo:rustc-link-search={}", path.display());
+    #[cfg(target_os = "macos")]
+    {
+        let sdl2_flags = pkg_config::Config::new().probe("SDL2").unwrap();
+        for flag in sdl2_flags.libs {
+            println!("cargo:rustc-link-lib={}", flag);
+        }
+        for path in sdl2_flags.link_paths {
+            println!("cargo:rustc-link-search={}", path.display());
+        }
     }
 }
 
@@ -55,11 +57,14 @@ fn main() {
         println!("cargo:rustc-link-search={}", path.display());
     }
 
-    let sdl2_flags = pkg_config::Config::new().probe("SDL2").unwrap();
-    for flag in sdl2_flags.libs {
-        println!("cargo:rustc-link-lib={}", flag);
-    }
-    for path in sdl2_flags.link_paths {
-        println!("cargo:rustc-link-search={}", path.display());
+    #[cfg(target_os = "macos")]
+    {
+        let sdl2_flags = pkg_config::Config::new().probe("SDL2").unwrap();
+        for flag in sdl2_flags.libs {
+            println!("cargo:rustc-link-lib={}", flag);
+        }
+        for path in sdl2_flags.link_paths {
+            println!("cargo:rustc-link-search={}", path.display());
+        }
     }
 }
