@@ -11,7 +11,13 @@ fn main() {
     )
     .expect("Couldn't find pregenerated bindings!");
 
-    println!("cargo:rustc-link-lib=mpv");
+    let mpv_flags = pkg_config::Config::new().probe("mpv").unwrap();
+    for flag in mpv_flags.libs {
+        println!("cargo:rustc-link-lib={}", flag);
+    }
+    for path in mpv_flags.link_paths {
+        println!("cargo:rustc-link-search={}", path.display());
+    }
 }
 
 #[cfg(feature = "use-bindgen")]
@@ -33,5 +39,11 @@ fn main() {
         .write_to_file(out_path.join("bindings.rs"))
         .expect("Couldn't write bindings!");
 
-    println!("cargo:rustc-link-lib=mpv");
+    let mpv_flags = pkg_config::Config::new().probe("mpv").unwrap();
+    for flag in mpv_flags.libs {
+        println!("cargo:rustc-link-lib={}", flag);
+    }
+    for path in mpv_flags.link_paths {
+        println!("cargo:rustc-link-search={}", path.display());
+    }
 }
